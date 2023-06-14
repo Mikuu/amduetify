@@ -1,5 +1,6 @@
 // Composables
 import { createRouter, createWebHistory } from 'vue-router'
+import MindingView from "@/views/MindingView"
 
 const routes = [
   {
@@ -16,6 +17,11 @@ const routes = [
       },
     ],
   },
+  {
+    path: '/minding',
+    name: 'Minding',
+    component: MindingView,
+  }
 ]
 
 const router = createRouter({
