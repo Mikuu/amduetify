@@ -7,27 +7,20 @@
 </template>
 
 <script setup>
-import MindElixir, { E } from "mind-elixir";
-import nodeMenu from '@mind-elixir/node-menu';
+  import { onMounted } from "vue";
+  import { useMindStore } from "@/store/mind";
 
-import { onMounted } from "vue";
+  onMounted(() => {
+    const mindStore = useMindStore();
+    mindStore.initializeMind('#mind-map');
+    if (mindStore.mindDataStored) {
+      mindStore.loadMindData();
+    }
 
-const options = {
-  el: '#mind-map',
-}
+    // const mindStore = useMindStore();
+    // mindStore.experiment('#mind-map', 6);
+  });
 
-const minding = () => {
-  const mind = new MindElixir(options);
-  const rootNode = MindElixir.new("demo");
-  mind.install(nodeMenu);
-  mind.init(rootNode);
-
-  E(rootNode.id);
-};
-
-onMounted(() => {
-  minding();
-});
 </script>
 
 <style>
