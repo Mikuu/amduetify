@@ -17,6 +17,7 @@
       mindStore.loadMindData();
     }
 
+    mindStore.syncMindDataToStorage();
     // const mindStore = useMindStore();
     // mindStore.experiment('#mind-map', 6);
   });
