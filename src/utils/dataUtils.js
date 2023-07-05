@@ -1,9 +1,11 @@
+import { checkAndReturnStyleObject } from "@/utils/commonUtils";
+
 export const extractNodeData = (parentId, obj) => {
   return {
     id: obj.id,
     topic: obj.topic,
     memo: obj.memo,
-    style: obj.style,
+    style: checkAndReturnStyleObject(obj.style),
     tags: obj.tags,
     icons: obj.icons,
     hyperLink: obj.hyperLink,
@@ -67,4 +69,27 @@ export const flattenNodeData = (nodeDataObject, updateIds) => {
   traverse(null, nodeDataObject);
 
   return result;
+}
+
+export const nodesToMindData = nodes => {
+  const buildNestedObjectInList = (nodes, parentId = null) => {
+    const nestedObject = {};
+
+    nodes.forEach(node => {
+      if (node.parentId === parentId) {
+        const children = buildNestedObjectInList(nodes, node.id);
+        nestedObject[node.id] = { ...node, children };
+
+        /** parentId and childrenIds are not native mind-elixir, they are added when saved into backend, so delete
+         * here before feed back to frontend **/
+        delete nestedObject[node.id].parentId;
+        delete nestedObject[node.id].childrenIds;
+      }
+    });
+
+    return Object.values(nestedObject);
+  };
+
+  const listOfObjects = buildNestedObjectInList(nodes);
+  return listOfObjects.pop();
 }

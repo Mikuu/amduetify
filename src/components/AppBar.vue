@@ -3,7 +3,8 @@
     <v-app-bar-title>Autominding</v-app-bar-title>
     <template v-slot:append>
       <v-btn icon="mdi-heart" @click="checkMindData"></v-btn>
-      <v-btn icon="mdi-content-save" @click="saveMindData"></v-btn>
+      <v-btn icon="mdi-content-save-outline" @click="saveMindData"></v-btn>
+      <v-btn icon="mdi-cloud-download-outline" @click="pullMindData"></v-btn>
       <v-btn icon="mdi-dots-vertical"></v-btn>
     </template>
   </v-app-bar>
@@ -36,11 +37,27 @@
       },
       () => {
         saveDataSucceed.value = false;
-        saveDataMessage.value = 'Save mind data failed, please check the network failure';
+        saveDataMessage.value = 'Save mind data failed';
         displaySnackbar.value = true;
-        setTimeout(() => { displaySnackbar.value = false }, 5000);
+        setTimeout(() => { displaySnackbar.value = false }, 3000);
       },
     );
+  };
+
+  const pullMindData = () => {
+    mindStore.pullMindData(
+      () => {
+        saveDataSucceed.value = true;
+        saveDataMessage.value = 'Pull mind data succeed';
+        displaySnackbar.value = true;
+        setTimeout(() => { displaySnackbar.value = false }, 2000);
+      },
+      () => {
+        saveDataSucceed.value = false;
+        saveDataMessage.value = 'Pull mind data failed';
+        displaySnackbar.value = true;
+        setTimeout(() => { displaySnackbar.value = false }, 3000);
+      });
   };
 
 </script>

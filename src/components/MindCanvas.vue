@@ -14,7 +14,7 @@
     const mindStore = useMindStore();
     mindStore.initializeMind('#mind-map');
     if (mindStore.mindDataStored) {
-      mindStore.loadMindData();
+      mindStore.loadMindData(mindStore.mindDataStored);
     }
 
     mindStore.syncMindDataToStorage();

@@ -9,3 +9,11 @@ export const post = async (url, payload) => {
 
     return await response.json();
 };
+
+export const get = async url => {
+  const response = await fetch(url, {
+    method: 'GET',
+  });
+
+  return await response.json();
+};
