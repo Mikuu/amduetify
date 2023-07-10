@@ -5,6 +5,7 @@ import nodeMenu from '@mind-elixir/node-menu';
 import { useLocalStorage } from '@vueuse/core';
 import { generateMockMindData } from "@/utils/mockUtils";
 import { extractViewData, flattenNodeData, nodesToMindData } from "@/utils/dataUtils";
+import { keycloak } from "@/plugins/keycloak";
 import * as ambClient from "@/clients/ambClient";
 
 const SYNC_MIND_DATA_INTERVAL = 5000;
@@ -71,6 +72,9 @@ export const useMindStore = defineStore('mind', {
       console.log(this.mindDataSync);
       console.log(this.mindDataStored);
       console.log(this.mindDataStorage.toString());
+
+      console.log(`authenticated: ${keycloak.authenticated}`);
+      console.log(`token: ${keycloak.token}`);
     },
 
     async saveMindData(succeedHandler, failedHandler) {

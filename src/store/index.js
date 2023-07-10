@@ -5,4 +5,5 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 
-export default createPinia();
+// export default createPinia();
+export default pinia;
