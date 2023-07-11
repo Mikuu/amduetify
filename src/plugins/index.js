@@ -9,15 +9,13 @@ import { loadFonts } from './webfontloader';
 import vuetify from './vuetify';
 import pinia from '../store';
 import router from '../router';
-import { KeycloakPlugin, keycloak } from "@/plugins/keycloak";
+import { KeycloakPlugin } from "@/plugins/keycloak";
 
 export function registerPlugins (app) {
   loadFonts()
   app
+    .use(KeycloakPlugin)
     .use(vuetify)
     .use(router)
     .use(pinia)
-    .use(KeycloakPlugin);
-
-  app.provide('keycloak', keycloak);
 }

@@ -11,23 +11,24 @@
 
       <v-row class="d-flex align-center justify-center">
         <v-col cols="auto">
-          <v-btn
-            color="primary"
-            href="http://localhost:3000/minding"
-            min-width="228"
-            rel="noopener noreferrer"
-            size="x-large"
-            target="_blank"
-            variant="flat"
-          >
-            <v-icon
-              icon="mdi-speedometer"
-              size="large"
-              start
-            />
+          <router-link to="/minding">
+            <v-btn
+              color="primary"
+              min-width="228"
+              rel="noopener noreferrer"
+              size="x-large"
+              target="_blank"
+              variant="flat"
+            >
+              <v-icon
+                icon="mdi-speedometer"
+                size="large"
+                start
+              />
 
-            Get Started
-          </v-btn>
+              Get Started
+            </v-btn>
+          </router-link>
         </v-col>
       </v-row>
     </v-responsive>
@@ -35,5 +36,4 @@
 </template>
 
 <script setup>
-  const automindUrl = "http://localhost:3000/minding";
 </script>

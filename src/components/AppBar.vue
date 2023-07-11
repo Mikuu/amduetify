@@ -5,7 +5,8 @@
       <v-btn icon="mdi-heart" @click="checkMindData"></v-btn>
       <v-btn icon="mdi-content-save-outline" @click="saveMindData"></v-btn>
       <v-btn icon="mdi-cloud-download-outline" @click="pullMindData"></v-btn>
-      <v-btn icon="mdi-logout" @click="logout"></v-btn>
+      <AccountMenu/>
+
     </template>
   </v-app-bar>
 
@@ -17,6 +18,7 @@
   import { ref, inject } from 'vue';
   import { useMindStore } from "@/store/mind";
   import NetworkSnackbar from "./NetworkSnackbar.vue";
+  import AccountMenu from "./AccountMenu.vue";
 
   const saveDataMessage = ref('');
   const saveDataSucceed = ref(true);
@@ -26,6 +28,10 @@
 
   const checkMindData = () => {
     mindStore.checkMindData();
+
+    console.log(`keycloak.subject: ${keycloak.value.subject}`);
+    console.log(`keycloak.idTokenParsed: ${keycloak.value.idTokenParsed}`);
+    console.log(JSON.parse(JSON.stringify(keycloak.value.idTokenParsed)));
   };
 
   const saveMindData = () => {
@@ -59,15 +65,6 @@
         displaySnackbar.value = true;
         setTimeout(() => { displaySnackbar.value = false }, 3000);
       });
-  };
-
-  const logout = () => {
-    // console.log(keycloak.value.token);
-    // console.log(keycloak.value.idToken);
-
-    keycloak.value.logout({
-      redirectUri: 'http://localhost:8080/realms/automind/account'
-    });
   };
 
 </script>
