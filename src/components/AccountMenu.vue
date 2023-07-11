@@ -10,11 +10,11 @@
     <v-divider></v-divider>
 
     <v-list>
-      <v-list-item link>
+      <v-list-item link @click="manageAccount">
         <template v-slot:prepend>
           <v-icon icon="mdi-account-edit" color="primary"></v-icon>
         </template>
-        <v-list-item-title>Change password</v-list-item-title>
+        <v-list-item-title>Manage account</v-list-item-title>
       </v-list-item>
 
       <v-list-item link @click="logout">
@@ -33,6 +33,10 @@
   const keycloak = ref(inject('keycloak'));
   const email = keycloak.value.idTokenParsed.email;
   const username = keycloak.value.idTokenParsed.preferred_username;
+
+  const manageAccount = () => {
+    window.location.href = 'http://localhost:8080/realms/automind/account/#/personal-info';
+  };
 
   const logout = () => {
     keycloak.value.logout({
