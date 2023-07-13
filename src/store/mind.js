@@ -83,7 +83,7 @@ export const useMindStore = defineStore('mind', {
       const updateNodes = flattenNodeData(fullData.nodeData, this.mindOperationStorage.updatedNodesIds);
 
       /** saving to backend **/
-      ambClient.updateNodeBulk(pid, vid, updateNodes, this.mindOperationStorage.removedNodesIds)
+      ambClient.updateNodeBulk(keycloak.token, pid, vid, updateNodes, this.mindOperationStorage.removedNodesIds)
         .then(() => {
           this.cleanMindOperationStorage();
           succeedHandler();
@@ -95,10 +95,10 @@ export const useMindStore = defineStore('mind', {
     },
 
     async pullMindData(succeedHandler, failedHandler) {
-      const viewDataResponse = await ambClient.retrieveView(pid, vid);
+      const viewDataResponse = await ambClient.retrieveView(keycloak.token, pid, vid);
 
       /** pulling data from backend **/
-      ambClient.fetchNodeBulk(pid, vid)
+      ambClient.fetchNodeBulk(keycloak.token, pid, vid)
         .then(response => {
           const mindData = nodesToMindData(response.nodes);
           console.log(mindData);

@@ -9,19 +9,19 @@ const getUrl = resourcePath => {
 
 // export const createView = async (pid, initialNodeId, initialNodeTopic) => {};
 
-export const retrieveView = async (pid, vid) => {
+export const retrieveView = async (access_token, pid, vid) => {
   const url = getUrl(PATH_VIEW) + `?pid=${pid}&vid=${vid}`;
-  return await get(url);
+  return await get(url, access_token);
 };
 
-export const fetchNodeBulk = async (pid, vid) => {
+export const fetchNodeBulk = async (access_token, pid, vid) => {
   const url = getUrl(PATH_NODES_BULK) + `?pid=${pid}&vid=${vid}`;
-  return await get(url);
+  return await get(url, access_token);
 };
 
-export const updateNodeBulk = async (pid, vid, updateNodes, deleteNodeIds) => {
+export const updateNodeBulk = async (access_token, pid, vid, updateNodes, deleteNodeIds) => {
   const url = getUrl(PATH_NODES_BULK);
   const payload = { pid, vid, updateNodes, deleteNodeIds }
   console.log(payload);
-  return await post(url, payload);
+  return await post(url, access_token, payload);
 };
