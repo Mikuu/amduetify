@@ -28,9 +28,12 @@
 
   const checkMindData = () => {
     mindStore.checkMindData();
-
+    console.log(`keycloak.tokenParsed:`);
+    const tokenParsed = keycloak.value.idTokenParsed;
+    console.log(JSON.parse(JSON.stringify(tokenParsed)));
+    console.log(`iat: ${new Date(tokenParsed.iat * 1000).toISOString()}, exp: ${new Date(tokenParsed.exp * 1000).toISOString()}`)
     console.log(`keycloak.subject: ${keycloak.value.subject}`);
-    console.log(`keycloak.idTokenParsed: ${keycloak.value.idTokenParsed}`);
+    console.log(`keycloak.idTokenParsed:`);
     console.log(JSON.parse(JSON.stringify(keycloak.value.idTokenParsed)));
   };
 
