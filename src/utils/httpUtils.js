@@ -4,13 +4,11 @@ const checkTokenAndRedirectToLoginIfTokenExpired = async () => {
   if (keycloak.isTokenExpired()) {
 
     const redirectUri = window.location.href.replace(window.location.hash, "");
-    console.log(`redirectUri: ${redirectUri}`);
 
     /**
      * Easy for use, but low secure.
      * **/
     // await keycloak.login();
-
 
     /**
      * More secure, but worse usability and need configure correct redirectUri in Keycloak.
