@@ -12,5 +12,6 @@ initKeycloak()
     app.mount('#app')
   })
   .catch( error => {
-    console.log(`initialize keycloak failed, error=${error}`);
+    console.log(`initialize keycloak failed:`);
+    console.log(error);
   })

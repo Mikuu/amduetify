@@ -13,7 +13,7 @@ export const retrieveProjects = async (accessToken, idTokenParsed) => {
 export const createProject = async (accessToken, projectName) => {
   const url = buildUrl(PATH_PROJECT);
   const payload = { projectName };
-  return await post(accessToken, url, payload);
+  return await post(url, accessToken, payload);
 };
 
 // export const createView = async (pid, initialNodeId, initialNodeTopic) => {};

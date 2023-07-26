@@ -10,12 +10,11 @@ export const useProjectStore = defineStore('project', {
   getters: {},
 
   actions: {
-    async retrieveProjects(succeedHandler, failedHandler) {
-      await ambClient.retrieveProjects(keycloak.token, keycloak.idTokenParsed)
+    retrieveProjects(succeedHandler, failedHandler) {
+      ambClient.retrieveProjects(keycloak.token, keycloak.idTokenParsed)
         .then(response => {
           this.projects = response.projects;
           if (succeedHandler) { succeedHandler(); }
-          console.log(`projects loaded: ${this.projects}`);
         })
         .catch(reason => {
           console.error(reason);
@@ -27,7 +26,6 @@ export const useProjectStore = defineStore('project', {
       ambClient.createProject(keycloak.token, projectName)
         .then(response => {
           this.projects.unshift({ pid: response.pid, projectName: response.projectName });
-          console.log(`project created, projectName=${response.projectName}, pid=${response.pid}`);
           if (succeedHandler) { succeedHandler(); }
         })
         .catch(reason => {

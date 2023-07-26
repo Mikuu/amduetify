@@ -19,7 +19,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="project in projects" :key="project.name">
+      <tr v-for="project in projectStore.projects" :key="project.name">
         <td class="font-weight-light">{{ project.projectName }}</td>
         <td class="font-weight-light">May 30, 2023 Ariman</td>
         <td class="font-weight-light">5</td>
@@ -41,44 +41,29 @@ const opMessage = ref('');
 const opSucceed = ref(true);
 const displaySnackbar = ref(false);
 
-// const projects = reactive([]);
 const projectInput = ref(null);
 const newProjectName = ref('');
 const isInputFocused = ref(false);
 
 const projectStore = useProjectStore();
-const projects = ref(projectStore.projects);
 
-onMounted(async () => {
-  // projects.push(
-  //   { projectId: "PID001", projectName: "This is a very long and long and long, then continue long name", lastModified: "May 30, 2023 Ariman", views: 100, config: true },
-  //   { projectId: "PID002", projectName: "This is a short name", lastModified: "May 30, 2023 Ariman", views: 50, config: true },
-  //   { projectId: "PID003", projectName: "Sandbox", lastModified: "May 30, 2023 Ariman", views: 200, config: false }
-  // );
-
-  console.log(`FBI --> load projects`);
-  await loadProjects();
-  console.log(`FBI --> onMounted load completed`);
-  console.log(projects.value);
-
-  watch(projects, (newVal, oldVal) => {
-    console.log(`FBI --> projects updated`);
-    console.log(oldVal);
-    console.log(newVal);
-  }, { immediate: true });
-
-
+onMounted(() => {
+  loadProjects();
 });
 
-const loadProjects = async () => {
-  await projectStore.retrieveProjects(null, null);
-  console.log(`FBI --> loading`);
-  console.log(projects.value);
+const loadProjects = () => {
+  projectStore.retrieveProjects(null, null);
 }
 
 const createProject = () => {
-  if (newProjectName.value.trim() === "") return;
-  // projects.push({ projectId: "PID00new", projectName: newProjectName.value, lastModified: "May 30, 2023 Ariman", views: 0, config: true });
+  const trimmedProjectName = newProjectName.value.trim();
+  if (trimmedProjectName === "") return;
+
+  const succeedHandler = () => {
+    projectStore.retrieveProjects(null, null);
+  };
+  projectStore.createProject(trimmedProjectName, succeedHandler, null);
+
   newProjectName.value = '';
   projectInput.value.blur();
 }
