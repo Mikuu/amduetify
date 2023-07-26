@@ -1,5 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import MindingView from "@/views/MindingView"
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from "@/views/HomeView";
+import ProjectView from "@/views/Project";
+import MindingView from "@/views/MindingView";
 import { keycloak } from "@/plugins/keycloak";
 
 const routes = [
@@ -9,15 +11,31 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'Home',
+        name: 'Landing',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
+        component: () => import(/* webpackChunkName: "home" */ '@/views/Landing.vue'),
       },
     ],
     meta: {
       requireAuth: false,
+    }
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    component: HomeView,
+    meta: {
+      requireAuth: true,
+    }
+  },
+  {
+    path: '/project',
+    name: 'Project',
+    component: ProjectView,
+    meta: {
+      requireAuth: true,
     }
   },
   {

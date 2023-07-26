@@ -12,14 +12,14 @@
     <v-list>
       <v-list-item link @click="manageAccount">
         <template v-slot:prepend>
-          <v-icon icon="mdi-account-edit" color="primary"></v-icon>
+          <v-icon icon="mdi-account-edit" class="mr-4" color="primary"></v-icon>
         </template>
         <v-list-item-title>Manage account</v-list-item-title>
       </v-list-item>
 
       <v-list-item link @click="logout">
         <template v-slot:prepend>
-          <v-icon icon="mdi-logout" color="primary"></v-icon>
+          <v-icon icon="mdi-logout" class="mr-4" color="primary"></v-icon>
         </template>
         <v-list-item-title>Logout</v-list-item-title>
       </v-list-item>
