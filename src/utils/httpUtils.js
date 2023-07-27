@@ -29,7 +29,12 @@ export const post = async (url, access_token, payload) => {
     body: JSON.stringify(payload),
   });
 
-  return await response.json();
+  if (response.ok) {
+    return await response.json();
+  } else if (response.status >= 400 && response.status <= 600) {
+    const responseJson = await response.json();
+    throw new Error(responseJson?.message);
+  }
 };
 
 export const get = async (url, access_token) => {
@@ -41,8 +46,18 @@ export const get = async (url, access_token) => {
       'Authorization': `Bearer ${access_token}`
     }
   });
-  // console.log('response:');
-  // console.log(`status: ${response.status}, body: ${await response.text()}`);
-  // console.log(response);
   return await response.json();
+};
+
+export const del = async (url, access_token) => {
+  await checkTokenAndRedirectToLoginIfTokenExpired();
+
+  const response = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${access_token}`
+    }
+  });
+  return await response.json();
+
 };

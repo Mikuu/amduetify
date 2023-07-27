@@ -1,4 +1,4 @@
-import { get, post } from '@/utils/httpUtils';
+import { get, post, del } from '@/utils/httpUtils';
 import { HOST, BATH_PATH, PATH_NODES_BULK, PATH_VIEW, PATH_PROJECT, PATH_PROJECTS } from '@/configs/ambConfig';
 
 const buildUrl = resourcePath => {
@@ -14,6 +14,11 @@ export const createProject = async (accessToken, projectName) => {
   const url = buildUrl(PATH_PROJECT);
   const payload = { projectName };
   return await post(url, accessToken, payload);
+};
+
+export const deleteProject = async (accessToken, pid) => {
+  const url = buildUrl(PATH_PROJECT) + `/${pid}`;
+  return await del(url, accessToken);
 };
 
 // export const createView = async (pid, initialNodeId, initialNodeTopic) => {};

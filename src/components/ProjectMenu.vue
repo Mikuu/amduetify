@@ -17,9 +17,13 @@
 </template>
 
 <script setup>
-const props = defineProps({projectId: String});
+import { useProjectStore } from "@/store/project";
+
+const projectStore = useProjectStore();
+const props = defineProps({pid: String});
 
 const deleteProject = () => {
-  console.log(`to delete project ${props.projectId}`);
+  const succeedHandler = () => { projectStore.retrieveProjects(); }
+  projectStore.deleteProject(props.pid, succeedHandler, null);
 }
 </script>

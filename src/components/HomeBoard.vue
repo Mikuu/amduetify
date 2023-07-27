@@ -19,11 +19,11 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="project in projectStore.projects" :key="project.name">
+      <tr v-for="project in projectStore.projects" :key="project.projectName">
         <td class="font-weight-light">{{ project.projectName }}</td>
         <td class="font-weight-light">May 30, 2023 Ariman</td>
         <td class="font-weight-light">5</td>
-        <td class="font-weight-light"><ProjectMenu :projectId="project.projectId"/></td>
+        <td class="font-weight-light"><ProjectMenu :pid="project.pid"/></td>
       </tr>
     </tbody>
   </v-table>
@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useProjectStore } from "@/store/project";
 import ProjectMenu from './ProjectMenu';
 import NetworkSnackbar from "./NetworkSnackbar.vue";
@@ -52,17 +52,25 @@ onMounted(() => {
 });
 
 const loadProjects = () => {
-  projectStore.retrieveProjects(null, null);
+  projectStore.retrieveProjects();
 }
 
 const createProject = () => {
   const trimmedProjectName = newProjectName.value.trim();
   if (trimmedProjectName === "") return;
 
-  const succeedHandler = () => {
-    projectStore.retrieveProjects(null, null);
+  const onSucceed = () => {
+    projectStore.retrieveProjects();
   };
-  projectStore.createProject(trimmedProjectName, succeedHandler, null);
+
+  const onFailed = (reason) => {
+    opSucceed.value = false;
+    opMessage.value = `Create project failed ${reason}`;
+    displaySnackbar.value = true;
+    setTimeout(() => { displaySnackbar.value = false }, 5000);
+  }
+
+  projectStore.createProject(trimmedProjectName, onSucceed, onFailed);
 
   newProjectName.value = '';
   projectInput.value.blur();
