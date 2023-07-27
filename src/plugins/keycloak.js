@@ -7,7 +7,11 @@ const keycloakState = reactive({
   token: null,
 });
 
-export const keycloak = new Keycloak();
+export const keycloak = new Keycloak({
+    url: "http://localhost:8080/",
+    clientId: "automind-app",
+    realm: "automind",
+});
 
 export const KeycloakPlugin = {
   install: (app) => {

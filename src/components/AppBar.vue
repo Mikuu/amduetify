@@ -1,6 +1,7 @@
 <template>
   <v-app-bar :elevation="1">
-    <v-app-bar-title>Autominding</v-app-bar-title>
+    <v-app-bar-title class="flex-none">Autominding</v-app-bar-title>
+    <v-breadcrumbs class="pl-12 text-body-2" :items="props.breadcrumbs" divider="/"></v-breadcrumbs>
     <template v-slot:append>
       <v-btn icon="mdi-heart" @click="checkMindData"></v-btn>
       <v-btn icon="mdi-content-save-outline" @click="saveMindData"></v-btn>
@@ -25,6 +26,8 @@
   const displaySnackbar = ref(false);
   const keycloak = ref(inject('keycloak'));
   const mindStore = useMindStore();
+
+  const props = defineProps(['breadcrumbs']);
 
   const checkMindData = () => {
     mindStore.checkMindData();
@@ -71,3 +74,9 @@
   };
 
 </script>
+
+<style>
+.flex-none {
+  flex: none;
+}
+</style>

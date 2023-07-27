@@ -3,7 +3,7 @@
     <thead>
       <tr>
         <th class="flex-grow-1 text-left">
-          Project
+          Projects
           <input
             ref="projectInput"
             class="mx-8 px-8 text-h6 font-weight-light"

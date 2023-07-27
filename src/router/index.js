@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from "@/views/HomeView";
-import ProjectView from "@/views/Project";
+import ProjectView from "@/views/ProjectView";
 import MindingView from "@/views/MindingView";
 import { keycloak } from "@/plugins/keycloak";
 
@@ -31,7 +31,7 @@ const routes = [
     }
   },
   {
-    path: '/project',
+    path: '/project/:pid',
     name: 'Project',
     component: ProjectView,
     meta: {
