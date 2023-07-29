@@ -16,6 +16,11 @@ export const createProject = async (accessToken, projectName) => {
   return await post(url, accessToken, payload);
 };
 
+export const getProject = async (accessToken, pid) => {
+  const url = buildUrl(PATH_PROJECT) + `/${pid}`;
+  return await get(url, accessToken);
+};
+
 export const deleteProject = async (accessToken, pid) => {
   const url = buildUrl(PATH_PROJECT) + `/${pid}`;
   return await del(url, accessToken);

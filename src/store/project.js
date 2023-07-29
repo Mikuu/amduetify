@@ -44,5 +44,16 @@ export const useProjectStore = defineStore('project', {
         });
     },
 
+    getProject(pid, succeedHandler=null, failedHandler=null) {
+      ambClient.getProject(keycloak.token, pid)
+          .then(response => {
+            if (succeedHandler) { succeedHandler(response.projectName); }
+          })
+          .catch(reason => {
+            console.error(reason);
+            if (failedHandler) { failedHandler(reason?.message ? `: ${reason?.message}` : ""); }
+          });
+    },
+
   },
 })

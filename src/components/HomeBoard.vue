@@ -20,7 +20,13 @@
     </thead>
     <tbody>
       <tr v-for="project in projectStore.projects" :key="project.projectName">
-        <td class="font-weight-light">{{ project.projectName }}</td>
+        <td class="font-weight-light">
+          <router-link
+              :to="`/project/${project.pid}`"
+              class="custom-router-link"
+              active-class="custom-active-link"
+          >{{ project.projectName }}</router-link>
+        </td>
         <td class="font-weight-light">May 30, 2023 Ariman</td>
         <td class="font-weight-light">5</td>
         <td class="font-weight-light"><ProjectMenu :pid="project.pid"/></td>
@@ -80,5 +86,20 @@ const createProject = () => {
 <style>
 .flex-grow-1 {
   flex: 1;
+}
+.custom-router-link {
+  text-decoration: none;
+  color: inherit;
+
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.custom-router-link:hover {
+  color: #1976d2;
+}
+
+.custom-active-link {
+  font-weight: bold;
 }
 </style>

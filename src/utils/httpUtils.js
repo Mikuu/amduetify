@@ -17,6 +17,15 @@ const checkTokenAndRedirectToLoginIfTokenExpired = async () => {
   }
 };
 
+const checkReturnResponseAndThrowErrorOnRequestFailed = async response => {
+  if (response.ok) {
+    return await response.json();
+  } else if (response.status >= 400 && response.status <= 600) {
+    const responseJson = await response.json();
+    throw new Error(responseJson?.message);
+  }
+}
+
 export const post = async (url, access_token, payload) => {
   await checkTokenAndRedirectToLoginIfTokenExpired();
 
@@ -29,12 +38,7 @@ export const post = async (url, access_token, payload) => {
     body: JSON.stringify(payload),
   });
 
-  if (response.ok) {
-    return await response.json();
-  } else if (response.status >= 400 && response.status <= 600) {
-    const responseJson = await response.json();
-    throw new Error(responseJson?.message);
-  }
+  return await checkReturnResponseAndThrowErrorOnRequestFailed(response);
 };
 
 export const get = async (url, access_token) => {
@@ -46,7 +50,8 @@ export const get = async (url, access_token) => {
       'Authorization': `Bearer ${access_token}`
     }
   });
-  return await response.json();
+
+  return await checkReturnResponseAndThrowErrorOnRequestFailed(response);
 };
 
 export const del = async (url, access_token) => {
@@ -58,6 +63,7 @@ export const del = async (url, access_token) => {
       'Authorization': `Bearer ${access_token}`
     }
   });
-  return await response.json();
+
+  return await checkReturnResponseAndThrowErrorOnRequestFailed(response);
 
 };

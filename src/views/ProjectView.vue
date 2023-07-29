@@ -1,32 +1,51 @@
 <template>
   <v-app>
     <AppBar :breadcrumbs="breadcrumbs"/>
-    <Project :pid="pid"/>
+    <Project :pid="route.params.pid"/>
   </v-app>
+
+  <NetworkSnackbar :show="displaySnackbar" :success="opSucceed" :message="opMessage" />
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { useProjectStore } from "@/store/project";
 import AppBar from '@/components/AppBar.vue';
 import Project from '@/components/ProjectBoard.vue';
+import NetworkSnackbar from "@/components/NetworkSnackbar.vue";
+
+const opMessage = ref('');
+const opSucceed = ref(true);
+const displaySnackbar = ref(false);
 
 const route = useRoute();
-const pid = ref(route.params.pid);
+const projectStore = useProjectStore();
 const projectName = ref(null);
 
-const breadcrumbs = [
-    { title: 'Home', disabled: true, href: '' },
-    { title: 'Home', disabled: true, href: '' },
+const breadcrumbs = reactive([
+    { title: 'Home', disabled: false, href: '/home' },
+    { title: projectName, disabled: true, href: '' },
+]);
 
-];
-
-onMounted(() => {
-    pid.value = route.params.pid;
+onMounted(async () => {
+  await fetchProjectName();
 });
 
-const fetchProjectName = () => {
+const fetchProjectName = async () => {
 
+  const onSucceed = (projectNameFromResponse) => {
+    projectName.value = projectNameFromResponse;
+  };
+
+  const onFailed = (reason) => {
+    opSucceed.value = false;
+    opMessage.value = `get project failed ${reason}`;
+    displaySnackbar.value = true;
+    setTimeout(() => { displaySnackbar.value = false }, 5000);
+  }
+
+  projectStore.getProject(route.params.pid, onSucceed, onFailed);
 };
 
 
