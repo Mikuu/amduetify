@@ -95,7 +95,7 @@ export const useMindStore = defineStore('mind', {
     },
 
     async pullMindData(succeedHandler, failedHandler) {
-      const viewDataResponse = await ambClient.retrieveView(keycloak.token, pid, vid);
+      const viewDataResponse = await ambClient.retrieveView(keycloak.token, vid);
 
       /** pulling data from backend **/
       ambClient.fetchNodeBulk(keycloak.token, pid, vid)

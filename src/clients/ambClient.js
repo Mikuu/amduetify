@@ -28,8 +28,8 @@ export const deleteProject = async (accessToken, pid) => {
 
 // export const createView = async (pid, initialNodeId, initialNodeTopic) => {};
 
-export const retrieveView = async (accessToken, pid, vid) => {
-  const url = buildUrl(PATH_VIEW) + `?pid=${pid}&vid=${vid}`;
+export const retrieveView = async (accessToken, vid) => {
+  const url = buildUrl(PATH_VIEW) + `/${vid}`;
   return await get(url, accessToken);
 };
 
