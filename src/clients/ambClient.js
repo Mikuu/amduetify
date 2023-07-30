@@ -1,5 +1,13 @@
 import { get, post, del } from '@/utils/httpUtils';
-import { HOST, BATH_PATH, PATH_NODES_BULK, PATH_VIEW, PATH_PROJECT, PATH_PROJECTS } from '@/configs/ambConfig';
+import {
+  HOST,
+  BATH_PATH,
+  PATH_NODES_BULK,
+  PATH_VIEW,
+  PATH_PROJECT,
+  PATH_PROJECTS,
+  PATH_VIEWS
+} from '@/configs/ambConfig';
 
 const buildUrl = resourcePath => {
   return `${HOST}${BATH_PATH}${resourcePath}`;
@@ -26,12 +34,31 @@ export const deleteProject = async (accessToken, pid) => {
   return await del(url, accessToken);
 };
 
-// export const createView = async (pid, initialNodeId, initialNodeTopic) => {};
+export const createView = async (accessToken, pid, viewType, viewName) => {
+  const url = buildUrl(PATH_VIEW);
+  const payload = { pid, viewType, viewName };
+  return await post(url, accessToken, payload);
+};
 
-export const retrieveView = async (accessToken, vid) => {
+export const retrieveViews = async (accessToken, pid) => {
+  const url = buildUrl(PATH_VIEWS) + `?pid=${pid}`;
+  return await get(url, accessToken);
+};
+
+export const getView = async (accessToken, vid) => {
   const url = buildUrl(PATH_VIEW) + `/${vid}`;
   return await get(url, accessToken);
 };
+
+export const deleteView = async (accessToken, vid) => {
+  const url = buildUrl(PATH_VIEW) + `/${vid}`;
+  return await del(url, accessToken);
+};
+
+export const deleteViews = async (accessToken, pid) => {
+  const url = buildUrl(PATH_VIEWS) + `?pid=${pid}`;
+  return await del(url, accessToken);
+}
 
 export const fetchNodeBulk = async (accessToken, pid, vid) => {
   const url = buildUrl(PATH_NODES_BULK) + `?pid=${pid}&vid=${vid}`;

@@ -9,7 +9,7 @@
         <template v-slot:prepend>
           <v-icon icon="mdi-delete" class="mr-4" color="primary"></v-icon>
         </template>
-        <v-list-item-title>Delete</v-list-item-title>
+        <v-list-item-title>Delete all views</v-list-item-title>
       </v-list-item>
     </v-list>
 
@@ -20,10 +20,10 @@
 import { useViewStore } from "@/store/view";
 
 const viewStore = useViewStore();
-const props = defineProps({ vid: String, pid: String});
+const props = defineProps({ pid: String});
 
 const deleteView = () => {
   const onSucceed = () => { viewStore.retrieveViews(props.pid) };
-  viewStore.deleteView(props.vid, onSucceed);
+  viewStore.deleteViews(props.pid, onSucceed);
 }
 </script>

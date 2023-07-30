@@ -4,44 +4,68 @@ import * as ambClient from "@/clients/ambClient";
 
 export const useViewStore = defineStore('view', {
   state: () => ({
-    views: []
+    views: [],
+    view: null
   }),
 
   getters: {},
 
   actions: {
-    retrieveViews(succeedHandler=null, failedHandler=null) {
-      // ambClient.retrieveProjects(keycloak.token, keycloak.idTokenParsed)
-      //   .then(response => {
-      //     this.projects = response.projects;
-      //     if (succeedHandler) { succeedHandler(); }
-      //   })
-      //   .catch(reason => {
-      //     console.error(reason);
-      //     if (failedHandler) { failedHandler(); }
-      //   });
+    retrieveViews(pid, succeedHandler=null, failedHandler=null) {
+      ambClient.retrieveViews(keycloak.token, pid)
+        .then(response => {
+          this.views = response.views;
+          if (succeedHandler) { succeedHandler(); }
+        })
+        .catch(reason => {
+          console.error(reason);
+          if (failedHandler) { failedHandler(reason?.message ? `: ${reason?.message}` : ""); }
+        });
     },
 
-    createView(projectName, succeedHandler=null, failedHandler=null) {
-      // ambClient.createProject(keycloak.token, projectName)
-      //   .then(response => {
-      //     if (succeedHandler) { succeedHandler(); }
-      //   })
-      //   .catch(reason => {
-      //     console.error(reason);
-      //     if (failedHandler) { failedHandler(reason?.message ? `: ${reason?.message}` : ""); }
-      //   });
+    getView(vid, succeedHandler=null, failedHandler=null) {
+      ambClient.getView(keycloak.token, vid)
+        .then(response => {
+          this.view = response;
+          if (succeedHandler) { succeedHandler(); }
+        })
+        .catch(reason => {
+          console.error(reason);
+          if (failedHandler) { failedHandler(); }
+        });
     },
 
-    deleteView(pid, succeedHandler=null, failedHandler=null) {
-      // ambClient.deleteProject(keycloak.token, pid)
-      //   .then(response => {
-      //    if (succeedHandler) { succeedHandler(); }
-      //   })
-      //   .catch(reason => {
-      //     console.error(reason);
-      //     if (failedHandler) { failedHandler(); }
-      //   });
+    createView(pid, viewType, viewName, succeedHandler=null, failedHandler=null) {
+      ambClient.createView(keycloak.token, pid, viewType, viewName)
+        .then(response => {
+          if (succeedHandler) { succeedHandler(); }
+        })
+        .catch(reason => {
+          console.error(reason);
+          if (failedHandler) { failedHandler(reason?.message ? `: ${reason?.message}` : ""); }
+        });
+    },
+
+    deleteView(vid, succeedHandler=null, failedHandler=null) {
+      ambClient.deleteView(keycloak.token, vid)
+        .then(response => {
+         if (succeedHandler) { succeedHandler(); }
+        })
+        .catch(reason => {
+          console.error(reason);
+          if (failedHandler) { failedHandler(); }
+        });
+    },
+
+    deleteViews(pid, succeedHandler=null, failedHandler=null) {
+      ambClient.deleteViews(keycloak.token, pid)
+        .then(response => {
+         if (succeedHandler) { succeedHandler(); }
+        })
+        .catch(reason => {
+          console.error(reason);
+          if (failedHandler) { failedHandler(); }
+        });
     },
 
   },

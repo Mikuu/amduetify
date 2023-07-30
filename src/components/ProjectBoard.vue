@@ -15,7 +15,7 @@
       </th>
       <th class="text-left" style="max-width: 60px">Last modified</th>
       <th class="text-left" style="max-width: 60px">View Type</th>
-      <th class="text-left" style="max-width: 30px"></th>
+      <th class="text-left" style="max-width: 30px"><ViewsMenu :pid="props.pid" /></th>
     </tr>
     </thead>
     <tbody>
@@ -23,7 +23,7 @@
       <td class="font-weight-light">{{ view.viewName }}</td>
       <td class="font-weight-light">May 30, 2023 Ariman</td>
       <td class="font-weight-light">5</td>
-      <td class="font-weight-light"><ViewMenu :vid="view.vid"/></td>
+      <td class="font-weight-light"><ViewMenu :vid="view.vid" :pid="view.pid"/></td>
     </tr>
     </tbody>
   </v-table>
@@ -35,6 +35,7 @@
 import { ref, onMounted } from 'vue';
 import { useViewStore } from "@/store/view";
 import ViewMenu from './ViewMenu.vue';
+import ViewsMenu from "@/components/ViewsMenu.vue";
 import NetworkSnackbar from "./NetworkSnackbar.vue";
 
 const opMessage = ref('');
@@ -48,12 +49,23 @@ const isInputFocused = ref(false);
 const viewStore = useViewStore();
 const props = defineProps(['pid']);
 
+const viewType = ref('requirements');
+
 onMounted(() => {
   loadViews();
 });
 
+const getOnFailed = (messagePrefix) => {
+  return (reason) => {
+    opSucceed.value = false;
+    opMessage.value = `${messagePrefix} ${reason}`;
+    displaySnackbar.value = true;
+    setTimeout(() => { displaySnackbar.value = false }, 5000);
+  }
+};
+
 const loadViews = () => {
-  viewStore.retrieveViews();
+  viewStore.retrieveViews(props.pid, null, getOnFailed("Retrieve views failed"));
 }
 
 const createView = () => {
@@ -61,17 +73,10 @@ const createView = () => {
   if (trimmedViewName === "") return;
 
   const onSucceed = () => {
-    viewStore.retrieveViews();
+    viewStore.retrieveViews(props.pid, null, getOnFailed("Retrieve views failed"));
   };
 
-  const onFailed = (reason) => {
-    opSucceed.value = false;
-    opMessage.value = `Create view failed ${reason}`;
-    displaySnackbar.value = true;
-    setTimeout(() => { displaySnackbar.value = false }, 5000);
-  }
-
-  viewStore.createView(trimmedViewName, onSucceed, onFailed);
+  viewStore.createView(props.pid, viewType.value, trimmedViewName, onSucceed, getOnFailed("Create view failed"));
 
   newViewName.value = '';
   viewInput.value.blur();
