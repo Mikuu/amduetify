@@ -4,6 +4,7 @@ Feature
 
 BUG
 --
+1. 在view页面获取的nodes会越界，比如获取包含多个root node的队列，不稳定复现，可以尝试在同一个project里面反复删除创建view
 
 ISSUE
 --

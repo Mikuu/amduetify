@@ -39,6 +39,14 @@ const routes = [
     }
   },
   {
+    path: '/view/:vid',
+    name: 'View',
+    component: MindingView,
+    meta: {
+      requireAuth: true,
+    }
+  },
+  {
     path: '/minding',
     name: 'Minding',
     component: MindingView,

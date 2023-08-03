@@ -1,0 +1,15 @@
+.custom-router-link {
+    text-decoration: none;
+    color: inherit;
+
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.custom-router-link:hover {
+    color: #1976d2;
+}
+
+.custom-active-link {
+    font-weight: bold;
+}

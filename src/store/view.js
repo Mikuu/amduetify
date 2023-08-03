@@ -23,8 +23,8 @@ export const useViewStore = defineStore('view', {
         });
     },
 
-    getView(vid, succeedHandler=null, failedHandler=null) {
-      ambClient.getView(keycloak.token, vid)
+    async getView(vid, succeedHandler=null, failedHandler=null) {
+      await ambClient.getView(keycloak.token, vid)
         .then(response => {
           this.view = response;
           if (succeedHandler) { succeedHandler(); }

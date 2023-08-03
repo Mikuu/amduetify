@@ -7,28 +7,30 @@
 </template>
 
 <script setup>
-  import { onMounted } from "vue";
-  import { useMindStore } from "@/store/mind";
+import { onMounted } from "vue";
+import { useMindStore } from "@/store/mind";
 
-  onMounted(() => {
-    const mindStore = useMindStore();
-    mindStore.initializeMind('#mind-map');
-    if (mindStore.mindDataStored) {
-      mindStore.loadMindData(mindStore.mindDataStored);
-    }
+const props = defineProps(['vid']);
 
-    mindStore.syncMindDataToStorage();
-    // const mindStore = useMindStore();
-    // mindStore.experiment('#mind-map', 6);
-  });
+onMounted(async () => {
+  console.log(`FBI --> MindCanvas onMounted started`);
+  const mindStore = useMindStore();
+  await mindStore.chargeMetaData(props.vid);
 
+  mindStore.initializeMind('#mind-map');
+  await mindStore.pullMindData();
+
+  mindStore.setupAutoSyncMindDataToStorage();
+
+  console.log(`FBI --> MindCanvas onMounted completed`);
+});
 </script>
 
 <style>
-  @import '../../node_modules/@mind-elixir/node-menu/dist/style.css';
-  #mind-map {
-    width: 100vw;
-    height: 93vh;
-    box-sizing: content-box;
-  }
+@import '../../node_modules/@mind-elixir/node-menu/dist/style.css';
+#mind-map {
+  width: 100vw;
+  height: 93vh;
+  box-sizing: content-box;
+}
 </style>

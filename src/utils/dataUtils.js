@@ -1,4 +1,4 @@
-import { checkAndReturnStyleObject } from "@/utils/commonUtils";
+import { checkAndReturnStyleObject } from "./commonUtils";
 
 export const extractNodeData = (parentId, obj) => {
   return {

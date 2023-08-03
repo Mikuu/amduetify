@@ -20,7 +20,13 @@
     </thead>
     <tbody>
     <tr v-for="view in viewStore.views" :key="view.viewName">
-      <td class="font-weight-light">{{ view.viewName }}</td>
+      <td class="font-weight-light">
+        <router-link
+        :to="`/view/${view.vid}`"
+        class="custom-router-link"
+        active-class="custom-active-link"
+        >{{ view.viewName }}</router-link>
+      </td>
       <td class="font-weight-light">May 30, 2023 Ariman</td>
       <td class="font-weight-light">5</td>
       <td class="font-weight-light"><ViewMenu :vid="view.vid" :pid="view.pid"/></td>
@@ -34,6 +40,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useViewStore } from "@/store/view";
+import "@/assets/routerLink.css";
 import ViewMenu from './ViewMenu.vue';
 import ViewsMenu from "@/components/ViewsMenu.vue";
 import NetworkSnackbar from "./NetworkSnackbar.vue";
