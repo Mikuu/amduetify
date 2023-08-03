@@ -26,9 +26,9 @@ const breadcrumbs = reactive([
 ]);
 
 onMounted( async () => {
-  console.log(`FBI --> MindingView onMounted started`);
+  // console.log(`FBI --> MindingView onMounted started`);
   await fetchView();
-  console.log(`FBI --> MindingView onMounted completed`);
+  // console.log(`FBI --> MindingView onMounted completed`);
 });
 
 const fetchView = async () => {

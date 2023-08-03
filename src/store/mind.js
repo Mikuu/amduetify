@@ -3,15 +3,12 @@ import { defineStore } from 'pinia'
 import MindElixir from "mind-elixir";
 import nodeMenu from '@mind-elixir/node-menu';
 import { useLocalStorage } from '@vueuse/core';
-import { generateMockMindData } from "@/utils/mockUtils";
 import { extractViewData, flattenNodeData, nodesToMindData } from "@/utils/dataUtils";
 import { keycloak } from "@/plugins/keycloak";
 import * as ambClient from "@/clients/ambClient";
+import { latteTheme } from "@/utils/themeUtils";
 
 const SYNC_MIND_DATA_INTERVAL = 5000;
-
-// const pid = 'PID8af9fb79e7e0475f8835d5edbc861ea9';
-// const vid = 'VID49fb3f8d9a05414d8e6ddacb230cf8f7';
 
 export const useMindStore = defineStore('mind', {
   state: () => ({
@@ -53,25 +50,39 @@ export const useMindStore = defineStore('mind', {
 
     initializeMind(elementLocator) {
       const eventListener = operation => {
+        const logOperation = operation => {
+          console.log('operation: ' + operation.name + ' -->');
+          console.log(operation);
+        };
+
         switch (operation.name) {
           case 'finishEdit':
           case 'reshapeNode':
           case 'updateMemo':
+            logOperation(operation);
             if (!this.mindOperationStorage.updatedNodesIds.includes(operation.obj.id)) {
               this.mindOperationStorage.updatedNodesIds.push(operation.obj.id);
             }
             break;
+          case 'moveNode':
+          case 'moveNodeBefore':
+          case 'moveNodeAfter':
+            logOperation(operation);
+            if (!this.mindOperationStorage.updatedNodesIds.includes(operation.obj.fromObj.id)) {
+              this.mindOperationStorage.updatedNodesIds.push(operation.obj.fromObj.id);
+            }
+            break;
           case 'removeNode':
+            logOperation(operation);
             this.mindOperationStorage.removedNodesIds.push(operation.obj.id);
             break;
           default:
-            // console.log('unlisted operation: ' + operation.name + ' -->');
-            // console.log(operation)
+            logOperation(operation);
         }
       };
 
-      const options = { el: elementLocator };
-      const rootNode = MindElixir.new("Athena");
+      const options = { el: elementLocator, theme: latteTheme };
+      const rootNode = MindElixir.new("");
 
       this.mind = new MindElixir(options);
       this.mind.install(nodeMenu);
@@ -110,33 +121,6 @@ export const useMindStore = defineStore('mind', {
       });
     },
 
-    // async pullMindData(succeedHandler, failedHandler) {
-    //   const viewDataResponse = await ambClient.getView(keycloak.token, this.vid);
-    //
-    //   /** pulling data from backend **/
-    //   ambClient.fetchNodeBulk(keycloak.token, this.pid, this.vid)
-    //     .then(response => {
-    //       const mindData = nodesToMindData(response.nodes);
-    //       console.log(mindData);
-    //       if (typeof succeedHandler === 'function') succeedHandler();
-    //
-    //       const mindDataFromBackend = {
-    //         /** backend doesn't support and never save frontend linkData, thus always create empty object when fetch
-    //          * from backend **/
-    //         linkData: {},
-    //         theme: viewDataResponse.theme,
-    //         direction: viewDataResponse.direction,
-    //         nodeData: mindData
-    //       };
-    //       this.loadMindData(mindDataFromBackend);
-    //
-    //     })
-    //     .catch((reason) => {
-    //       console.error(reason);
-    //       if (typeof failedHandler === 'function') failedHandler();
-    //     })
-    // },
-
     async pullMindData(succeedHandler=null, failedHandler=null) {
       // const viewDataResponse = await ambClient.getView(keycloak.token, this.vid);
 
@@ -144,24 +128,10 @@ export const useMindStore = defineStore('mind', {
       ambClient.fetchNodeBulk(keycloak.token, this.pid, this.vid)
         .then(async response => {
           const mindData = nodesToMindData(response.nodes);
-          console.log(`FBI --> response:`);
-          console.log(response);
-          console.log(response.nodes);
-          console.log(mindData);
-
-          // if (mindData) {
-          //   this.loadMindData({
-          //     /** backend doesn't support and never save frontend linkData, thus always create empty object when fetch
-          //      * from backend **/
-          //     linkData: {},
-          //     theme: viewDataResponse.theme,
-          //     direction: viewDataResponse.direction,
-          //     nodeData: mindData
-          //   });
-          //
-          // } else {
-          //   this.initializeMindData(viewDataResponse.viewName);
-          // }
+          // console.log(`FBI --> response:`);
+          // console.log(response);
+          // console.log(response.nodes);
+          // console.log(mindData);
 
           await this.loadBackendMindDataOrInitializeNewMind(this.vid, mindData);
           if (typeof succeedHandler === 'function') succeedHandler();
@@ -187,9 +157,8 @@ export const useMindStore = defineStore('mind', {
     async loadBackendMindDataOrInitializeNewMind(vid, mindData) {
       const viewDataResponse = await ambClient.getView(keycloak.token, vid);
 
-      console.log(`FBI --> mindData: `);
-      console.log(mindData);
-
+      // console.log(`FBI --> mindData: `);
+      // console.log(mindData);
 
       if (mindData) {
         this.loadMindData({

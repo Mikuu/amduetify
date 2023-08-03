@@ -13,7 +13,7 @@ import { useMindStore } from "@/store/mind";
 const props = defineProps(['vid']);
 
 onMounted(async () => {
-  console.log(`FBI --> MindCanvas onMounted started`);
+  // console.log(`FBI --> MindCanvas onMounted started`);
   const mindStore = useMindStore();
   await mindStore.chargeMetaData(props.vid);
 
@@ -22,7 +22,7 @@ onMounted(async () => {
 
   mindStore.setupAutoSyncMindDataToStorage();
 
-  console.log(`FBI --> MindCanvas onMounted completed`);
+  // console.log(`FBI --> MindCanvas onMounted completed`);
 });
 </script>
 

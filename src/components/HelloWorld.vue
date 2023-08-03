@@ -11,7 +11,7 @@
 
       <v-row class="d-flex align-center justify-center">
         <v-col cols="auto">
-          <router-link to="/minding">
+          <router-link to="/home">
             <v-btn
               color="primary"
               min-width="228"
